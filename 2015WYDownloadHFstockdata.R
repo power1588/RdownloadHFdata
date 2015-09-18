@@ -21,7 +21,7 @@ id <- as.character(array(1:50))
 temp <- as.character(array(1:50))
   
 #transform into string
-for (i in 1:50){
+for (i in 1:length(id)){
   id[i] <- as.character(tradeid[i,1])
   #get the numeric ID of SZ50
   id[i] <- substr(id[i],7,12)
@@ -29,18 +29,8 @@ for (i in 1:50){
   #https://gw.wmcloud.com/dataquery//CsvData.csv?pretty=true&input=600000%2020150601%20%E9%AB%98%E9%A2%91&secNum=0
   temp[i] <- paste('https://gw.wmcloud.com/dataquery//CsvData.csv?pretty=true&input=',id[i],sep = "")  
 }
-
-for (j in 1:2){
-  #generate the dir for the stock
-  dirn <- paste("2015Y",id[j],sep = "")
-  dir.create(dirn)
-  fatherdir <- "E://Rtrial"
-  #combine dir
-  newdir <- paste(fatherdir,dirn,sep = "//")
-  # set work dirctory to the new one
-  setwd(newdir)
-#for (i in 1:length(tradeD)){
-  for (i in 1:2){
+#generate IndexDa
+for (i in 1:length(id)){
   #convert yyyy-mm-dd Date format into yyyymmdd format
   IndexDa[i] = as.character(tradeD[i])
   Inyear = as.character(substr(IndexDa[i],1,4))
@@ -49,8 +39,26 @@ for (j in 1:2){
   Inday = as.character(substr(IndexDa[i],9,10))
   Inday = sprintf("%02d",as.integer(Inday))
   IndexDa[i] = paste(Inyear,Inmon,Inday,sep = "")
+  }
+
+# tradeD of stocks
+for (j in 1:length(tradeD)){
+  #generate the dir for the stock
+  dirn <- paste("2015Y",id[j],sep = "")
+  dir.create(dirn)
+  fatherdir <- "E://Rtrial"
+  #combine dir
+  newdir <- paste(fatherdir,dirn,sep = "//")
+  # set work dirctory to the new one
+  setwd(newdir)
+  #variable temp store the stockID and each inner loop same sotckID 
   #paset a whole download address
-  temp[i] <- paste(temp[i],'%20',IndexDa[i],'%20%E9%AB%98%E9%A2%91&secNum=0',sep="")
+  temp[j] <- paste(temp[j],'%20',IndexDa[i],'%20%E9%AB%98%E9%A2%91&secNum=0',sep="")
+  
+#for (i in 1:length(tradeD)){
+  #id of number of sotck
+  for (i in 1:length(id)){
+  
   #generate the file name
   IndexDa[i] = paste(IndexDa[i],'.csv',sep = "")
   #download the file
